@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,35 +15,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-use App\Models\Post;
-use App\Models\Category;
 
-Route::get('/createpost', function(){
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-  $post = Post::create([
-    'title'=>'This is a title',
-    'excerpt' => 'This is a excerpt',
-    'slug' => 'This is a slug', 
-    'body' => 'This is a body',
-    'user_id' => 1,
-    'category_id' => Category::create(['name'=>'Education', 'slug'=>'education'])->id
-  ]);
+//post detail
+Route::get('/posts/{post:slug}', [PostsController::class, 'show'])->name('posts.show');
 
-  $post->image()->create(['name'=>'random file', 'extension'=>'jpg', 'path'=>'/image/random_file.jpg']);
-});
-
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
-Route::get('/post', function () {
-    return view('post');
-})->name('post');
-
+//about
 Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+//contact
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
